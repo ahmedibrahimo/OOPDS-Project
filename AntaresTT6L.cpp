@@ -389,8 +389,36 @@ void assignCrewToShips(vector<Ship*>& ships, vector<CrewMember*>& crew) {
 
 void assignWeaponsToShips(vector<Ship*>& ships) {
     for (Ship* s : ships) {
-        // temporary simple setup
-        s->addWeapon(new Weapon("light_cannon", 100));
+
+        // Zapezoid ships
+        if (dynamic_cast<Guerriero*>(s)) {
+            s->addWeapon(new Weapon("light_cannon", 96));
+        }
+        else if (dynamic_cast<Medio*>(s)) {
+            s->addWeapon(new Weapon("light_cannon", 134));
+            s->addWeapon(new Weapon("light_cannon", 134));
+        }
+        else if (dynamic_cast<Corazzata*>(s)) {
+            for (int i = 0; i < 10; i++)
+                s->addWeapon(new Weapon("light_cannon", 164));
+            for (int i = 0; i < 4; i++)
+                s->addWeapon(new Weapon("torpedo", 293));
+        }
+
+        // Rogoatuskan ships
+        else if (dynamic_cast<Jager*>(s)) {
+            s->addWeapon(new Weapon("light_cannon", 96));
+        }
+        else if (dynamic_cast<Kreuzer*>(s)) {
+            s->addWeapon(new Weapon("light_cannon", 134));
+            s->addWeapon(new Weapon("light_cannon", 134));
+        }
+        else if (dynamic_cast<Fregatte*>(s)) {
+            for (int i = 0; i < 8; i++)
+                s->addWeapon(new Weapon("light_cannon", 164));
+            for (int i = 0; i < 4; i++)
+                s->addWeapon(new Weapon("torpedo", 293));
+        }
     }
 }
 
