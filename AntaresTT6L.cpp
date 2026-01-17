@@ -14,6 +14,11 @@
 
 using namespace std;
 
+bool didHit(int hitChance) {
+    int roll = rand() % 100;  // 0–99
+    return roll < hitChance;
+}
+
 class Ship;
 
 Ship* getRandomEnemy(vector<Ship*>& enemies) {
@@ -63,12 +68,13 @@ class Ship {
 protected:
     string name;
     int hitPoints;
+    int hitChance;
     vector<CrewMember*> crew;
     vector<Weapon*> weapons;
 
 public:
-    Ship(const string& name, int hp)
-        : name(name), hitPoints(hp) {}
+    Ship(const string& name, int hp, int hitChance)
+    : name(name), hitPoints(hp), hitChance(hitChance) {}
 
     virtual ~Ship() {}
 
@@ -84,6 +90,10 @@ public:
 
     string getName() const {
         return name;
+    }
+
+    int getHitChance() const {
+        return hitChance;
     }
 
     int getHitPoints() const {
@@ -102,110 +112,133 @@ public:
 class Guerriero : public Ship {
 public:
     Guerriero(const string& name)
-        : Ship(name, 123) {}
+        : Ship(name, 123, 26) {}
 
     void attack(vector<Ship*>& enemies) override {
-    Ship* target = getRandomEnemy(enemies);
-    if (!target) return;
+        Ship* target = getRandomEnemy(enemies);
+        if (!target) return;
 
-    int damage = weapons[0]->getPower();
-    target->takeDamage(damage);
+        if (didHit(target->getHitChance())) {
+            int damage = weapons[0]->getPower();
+            target->takeDamage(damage);
 
-    cout << name << " attacks " << target->getName()
-         << " for " << damage << " damage\n";
-}
-
+            cout << name << " hits " << target->getName()
+                 << " for " << damage << " damage\n";
+        } else {
+            cout << name << " misses " << target->getName() << endl;
+        }
+    }
 };
 
 class Medio : public Ship {
 public:
     Medio(const string& name)
-        : Ship(name, 214) {}
+        : Ship(name, 214, 31) {}
 
     void attack(vector<Ship*>& enemies) override {
-    Ship* target = getRandomEnemy(enemies);
-    if (!target) return;
+        Ship* target = getRandomEnemy(enemies);
+        if (!target) return;
 
-    int damage = weapons[0]->getPower();
-    target->takeDamage(damage);
+        if (didHit(target->getHitChance())) {
+            int damage = weapons[0]->getPower();
+            target->takeDamage(damage);
 
-    cout << name << " attacks " << target->getName()
-         << " for " << damage << " damage\n";
-}
-
+            cout << name << " hits " << target->getName()
+                 << " for " << damage << " damage\n";
+        } else {
+            cout << name << " misses " << target->getName() << endl;
+        }
+    }
 };
+
 
 class Corazzata : public Ship {
 public:
     Corazzata(const string& name)
-        : Ship(name, 1031) {}
+        : Ship(name, 1031, 50) {}
 
     void attack(vector<Ship*>& enemies) override {
-    Ship* target = getRandomEnemy(enemies);
-    if (!target) return;
+        Ship* target = getRandomEnemy(enemies);
+        if (!target) return;
 
-    int damage = weapons[0]->getPower();
-    target->takeDamage(damage);
+        if (didHit(target->getHitChance())) {
+            int damage = weapons[0]->getPower();
+            target->takeDamage(damage);
 
-    cout << name << " attacks " << target->getName()
-         << " for " << damage << " damage\n";
-}
-
+            cout << name << " hits " << target->getName()
+                 << " for " << damage << " damage\n";
+        } else {
+            cout << name << " misses " << target->getName() << endl;
+        }
+    }
 };
+
 
 class Jager : public Ship {
 public:
     Jager(const string& name)
-        : Ship(name, 112) {}
+        : Ship(name, 112, 24) {}
 
-   void attack(vector<Ship*>& enemies) override {
-    Ship* target = getRandomEnemy(enemies);
-    if (!target) return;
+    void attack(vector<Ship*>& enemies) override {
+        Ship* target = getRandomEnemy(enemies);
+        if (!target) return;
 
-    int damage = weapons[0]->getPower();
-    target->takeDamage(damage);
+        if (didHit(target->getHitChance())) {
+            int damage = weapons[0]->getPower();
+            target->takeDamage(damage);
 
-    cout << name << " attacks " << target->getName()
-         << " for " << damage << " damage\n";
-}
-
+            cout << name << " hits " << target->getName()
+                 << " for " << damage << " damage\n";
+        } else {
+            cout << name << " misses " << target->getName() << endl;
+        }
+    }
 };
+
 
 class Kreuzer : public Ship {
 public:
     Kreuzer(const string& name)
-        : Ship(name, 212) {}
+        : Ship(name, 212, 29) {}
 
     void attack(vector<Ship*>& enemies) override {
-    Ship* target = getRandomEnemy(enemies);
-    if (!target) return;
+        Ship* target = getRandomEnemy(enemies);
+        if (!target) return;
 
-    int damage = weapons[0]->getPower();
-    target->takeDamage(damage);
+        if (didHit(target->getHitChance())) {
+            int damage = weapons[0]->getPower();
+            target->takeDamage(damage);
 
-    cout << name << " attacks " << target->getName()
-         << " for " << damage << " damage\n";
-}
-
+            cout << name << " hits " << target->getName()
+                 << " for " << damage << " damage\n";
+        } else {
+            cout << name << " misses " << target->getName() << endl;
+        }
+    }
 };
+
 
 class Fregatte : public Ship {
 public:
     Fregatte(const string& name)
-        : Ship(name, 1143) {}
+        : Ship(name, 1143, 60) {}
 
     void attack(vector<Ship*>& enemies) override {
-    Ship* target = getRandomEnemy(enemies);
-    if (!target) return;
+        Ship* target = getRandomEnemy(enemies);
+        if (!target) return;
 
-    int damage = weapons[0]->getPower();
-    target->takeDamage(damage);
+        if (didHit(target->getHitChance())) {
+            int damage = weapons[0]->getPower();
+            target->takeDamage(damage);
 
-    cout << name << " attacks " << target->getName()
-         << " for " << damage << " damage\n";
-}
-
+            cout << name << " hits " << target->getName()
+                 << " for " << damage << " damage\n";
+        } else {
+            cout << name << " misses " << target->getName() << endl;
+        }
+    }
 };
+
 
 class BattleEngine {
 private:
