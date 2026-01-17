@@ -64,6 +64,23 @@ public:
     }
 };
 
+Weapon* getLightCannon(const vector<Weapon*>& weapons) {
+    for (Weapon* w : weapons) {
+        if (w->getType() == "light_cannon")
+            return w;
+    }
+    return nullptr;
+}
+
+Weapon* getTorpedo(const vector<Weapon*>& weapons) {
+    for (Weapon* w : weapons) {
+        if (w->getType() == "torpedo")
+            return w;
+    }
+    return nullptr;
+}
+
+
 class Ship {
 protected:
     string name;
@@ -118,12 +135,19 @@ public:
         Ship* target = getRandomEnemy(enemies);
         if (!target) return;
 
+        Weapon* cannon = getLightCannon(weapons);
+        if (!cannon && !weapons.empty()) {
+            cannon = weapons[0];
+        }
+        if (!cannon) return;
+
         if (didHit(target->getHitChance())) {
-            int damage = weapons[0]->getPower();
+            int damage = cannon->getPower();
             target->takeDamage(damage);
 
             cout << name << " hits " << target->getName()
-                 << " for " << damage << " damage\n";
+                 << " with light cannon for "
+                 << damage << " damage\n";
         } else {
             cout << name << " misses " << target->getName() << endl;
         }
@@ -139,18 +163,24 @@ public:
         Ship* target = getRandomEnemy(enemies);
         if (!target) return;
 
+        Weapon* cannon = getLightCannon(weapons);
+        if (!cannon && !weapons.empty()) {
+            cannon = weapons[0];
+        }
+        if (!cannon) return;
+
         if (didHit(target->getHitChance())) {
-            int damage = weapons[0]->getPower();
+            int damage = cannon->getPower();
             target->takeDamage(damage);
 
             cout << name << " hits " << target->getName()
-                 << " for " << damage << " damage\n";
+                 << " with light cannon for "
+                 << damage << " damage\n";
         } else {
             cout << name << " misses " << target->getName() << endl;
         }
     }
 };
-
 
 class Corazzata : public Ship {
 public:
@@ -161,18 +191,24 @@ public:
         Ship* target = getRandomEnemy(enemies);
         if (!target) return;
 
+        Weapon* cannon = getLightCannon(weapons);
+        if (!cannon && !weapons.empty()) {
+            cannon = weapons[0];
+        }
+        if (!cannon) return;
+
         if (didHit(target->getHitChance())) {
-            int damage = weapons[0]->getPower();
+            int damage = cannon->getPower();
             target->takeDamage(damage);
 
             cout << name << " hits " << target->getName()
-                 << " for " << damage << " damage\n";
+                 << " with light cannon for "
+                 << damage << " damage\n";
         } else {
             cout << name << " misses " << target->getName() << endl;
         }
     }
 };
-
 
 class Jager : public Ship {
 public:
@@ -183,18 +219,24 @@ public:
         Ship* target = getRandomEnemy(enemies);
         if (!target) return;
 
+        Weapon* cannon = getLightCannon(weapons);
+        if (!cannon && !weapons.empty()) {
+            cannon = weapons[0];
+        }
+        if (!cannon) return;
+
         if (didHit(target->getHitChance())) {
-            int damage = weapons[0]->getPower();
+            int damage = cannon->getPower();
             target->takeDamage(damage);
 
             cout << name << " hits " << target->getName()
-                 << " for " << damage << " damage\n";
+                 << " with light cannon for "
+                 << damage << " damage\n";
         } else {
             cout << name << " misses " << target->getName() << endl;
         }
     }
 };
-
 
 class Kreuzer : public Ship {
 public:
@@ -205,18 +247,24 @@ public:
         Ship* target = getRandomEnemy(enemies);
         if (!target) return;
 
+        Weapon* cannon = getLightCannon(weapons);
+        if (!cannon && !weapons.empty()) {
+            cannon = weapons[0];
+        }
+        if (!cannon) return;
+
         if (didHit(target->getHitChance())) {
-            int damage = weapons[0]->getPower();
+            int damage = cannon->getPower();
             target->takeDamage(damage);
 
             cout << name << " hits " << target->getName()
-                 << " for " << damage << " damage\n";
+                 << " with light cannon for "
+                 << damage << " damage\n";
         } else {
             cout << name << " misses " << target->getName() << endl;
         }
     }
 };
-
 
 class Fregatte : public Ship {
 public:
@@ -227,18 +275,24 @@ public:
         Ship* target = getRandomEnemy(enemies);
         if (!target) return;
 
+        Weapon* cannon = getLightCannon(weapons);
+        if (!cannon && !weapons.empty()) {
+            cannon = weapons[0];
+        }
+        if (!cannon) return;
+
         if (didHit(target->getHitChance())) {
-            int damage = weapons[0]->getPower();
+            int damage = cannon->getPower();
             target->takeDamage(damage);
 
             cout << name << " hits " << target->getName()
-                 << " for " << damage << " damage\n";
+                 << " with light cannon for "
+                 << damage << " damage\n";
         } else {
             cout << name << " misses " << target->getName() << endl;
         }
     }
 };
-
 
 class BattleEngine {
 private:
