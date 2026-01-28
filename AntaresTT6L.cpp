@@ -242,7 +242,7 @@ public:
             cout << shipType << " " << name << " hits " << target->getShipType() << " " << target->getName()
                  << " with " << cannon->getType() << " for " << damage << " damage\n";
         } else {
-            cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << endl;
+            cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << " With " << cannon->getType() << endl;
         }
     }
 };
@@ -266,7 +266,7 @@ public:
                 cout << shipType << " " << name << " hits " << target->getShipType() << " " << target->getName()
                      << " with " << w->getType() << " for " << damage << " damage\n";
             } else {
-                cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << endl;
+                cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << " With " << w->getType() << endl;
             }
         }
     }
@@ -311,7 +311,7 @@ public:
                 cout << shipType << " " << name << " hits " << target->getShipType() << " " << target->getName()
                      << " with " << w->getType() << " for " << damage << " damage\n";
             } else {
-                cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << endl;
+                cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << " With " << w->getType() << endl;
             }
         }
     }
@@ -355,6 +355,7 @@ public:
             first = false;
         }
         cout << "\n";
+    
     }
 };
 
@@ -382,7 +383,7 @@ public:
             cout << shipType << " " << name << " hits " << target->getShipType() << " " << target->getName()
                  << " with " << cannon->getType() << " for " << damage << " damage\n";
         } else {
-            cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << endl;
+            cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << " With " << cannon->getType() << endl;
         }
     }
 };
@@ -406,9 +407,9 @@ public:
                 cout << shipType << " " << name << " hits " << target->getShipType() << " " << target->getName()
                      << " with " << w->getType() << " for " << damage << " damage\n";
             } else {
-                cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << endl;
+                cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << " With " << w->getType() << endl;
             }
-        }
+        }   
     }
 };
 
@@ -451,7 +452,7 @@ public:
                 cout << shipType << " " << name << " hits " << target->getShipType() << " " << target->getName()
                      << " with " << w->getType() << " for " << damage << " damage\n";
             } else {
-                cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << endl;
+                cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << " With " << w->getType() << endl;
             }
         }
     }
@@ -532,11 +533,18 @@ private:
             cout << "   " << "[" << s->getID() << "] " << s->getShipType() << " " << s->getName()
                  << " (" << s->getHitPoints() << "/" << s->getMaxHitPoints() << ")\n";
         }
+        if (zShips.empty()) {
+            cout << "All Zapezoid ships have been destroyed!\n";
+        }
 
         cout << "Rogoatuskans:\n";
         for (Ship* s : rShips) {
             cout << "   " << "[" << s->getID() << "] " << s->getShipType() << " " << s->getName()
                  << " (" << s->getHitPoints() << "/" << s->getMaxHitPoints() << ")\n";
+        }
+
+        if (rShips.empty()) {
+            cout << "All Rogoatuskan ships have been destroyed!\n";
         }
 
     }
