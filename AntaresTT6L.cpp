@@ -741,9 +741,9 @@ void assignWeaponsToShips(vector<Ship*>& ships, queue<CrewMember*>& gunner, int 
 
         // Zapezoid ships
         if (dynamic_cast<Guerriero*>(s)) {
-            dynamic_cast<Guerriero*>(s)->setPilotasGunner();
+            dynamic_cast<Guerriero*>(s)->setPilotasGunner(); //pilot = gunner
         }
-        else if (dynamic_cast<Medio*>(s)) {
+        else if (dynamic_cast<Medio*>(s)) { //search the gunner vector for light cannon gunner, rotate the crew if torpedo is met
             bool foundGunner = false;
             int count = gunner.size();
             for (int i = 0; i < count; i++){
@@ -769,7 +769,7 @@ void assignWeaponsToShips(vector<Ship*>& ships, queue<CrewMember*>& gunner, int 
             bool foundGunner = false;
             bool foundTorpedo = false;
             int count = gunner.size();
-            for (int i = 0; i < count; i++){
+            for (int i = 0; i < count; i++){//add 1 gunner and torpedo, iteration < 5 checks if it already have 5 torpedoers or not
                 if(gunner.front()->getRole() == "TorpedoHandler" && iteration < 5 && !foundTorpedo){
                     s->addCrew(gunner.front());
                     s->addWeapon(new Weapon("Torpedo", 293, gunner.front()));
@@ -798,6 +798,7 @@ void assignWeaponsToShips(vector<Ship*>& ships, queue<CrewMember*>& gunner, int 
         }
 
         // Rogoatuskan ships
+        // same logic applies below
         else if (dynamic_cast<Jager*>(s)) {
             dynamic_cast<Jager*>(s)->setPilotasGunner();
         }
