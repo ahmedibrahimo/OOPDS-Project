@@ -144,7 +144,7 @@ public:
 
     double getHitChance() const {
         if (maxPilot > getPilotCount()){
-            return hitChance*1.75;
+            return 100 - ((100 - hitChance) * 0.75);
         }
         return hitChance;
     }
