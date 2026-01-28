@@ -16,6 +16,12 @@
 
 using namespace std;
 
+void trimCR(string& s) { //remove carriage return if present, for linux
+    if (!s.empty() && s.back() == '\r') {
+        s.pop_back();
+    }
+}
+
 bool didHit(double hitChance) {
     double roll = rand() % 100;  // 0–99
     return roll < hitChance;
@@ -69,6 +75,10 @@ public:
     string getType() const {
         return type;
     }
+
+    CrewMember* getCrew() const {
+        return crew;
+    }
 };
 
 Weapon* getLightCannon(const vector<Weapon*>& weapons) {
@@ -93,6 +103,7 @@ protected:
     string id;
     string name;
     string shipType;
+    int maxHitPoints;
     int hitPoints;
     int hitChance;
     int maxPilot;
@@ -105,7 +116,7 @@ protected:
 
 public:
     Ship(const string& id, const string& name, int hp, int hitChance, const int maxPilot, const int maxCannon, const int maxTorpedo)
-    : id(id), name(name), hitPoints(hp), hitChance(hitChance), maxPilot(maxPilot), maxCannon(maxCannon), maxTorpedo(maxTorpedo){}
+    : id(id), name(name), maxHitPoints(hp), hitPoints(hp), hitChance(hitChance), maxPilot(maxPilot), maxCannon(maxCannon), maxTorpedo(maxTorpedo){}
 
     virtual ~Ship() {}
 
@@ -158,8 +169,12 @@ public:
         return hitPoints;
     }
 
-    int getHP() const {
-        return hitPoints;
+    int getMaxHitPoints() const {
+        return maxHitPoints;
+    }
+
+    string getID() const {
+        return id;
     }
 
     void addCrew(CrewMember* c) {
@@ -172,6 +187,31 @@ public:
 
     void addWeapon(Weapon* w) {
         weapons.push_back(w);
+    }
+
+    virtual void printDetails(){
+        cout << "[" << id << "] " << "  " << name << "  " << "(" << shipType << ")\n";
+        cout << "   HP: " << hitPoints << "/" << maxHitPoints << "\n";
+        cout << "   Pilots (" << pilot.size() << "/" << maxPilot << "): ";
+        bool first = true;
+        for (CrewMember* p : pilot){
+            if (!first) {
+            cout << ", ";
+            }
+            cout << p->getName();
+            first = false;
+        }
+        cout << "\n";
+        cout << "   Gunners (" << weapons.size() << "/" << maxCannon << "): ";
+        first = true;
+        for (Weapon* w : weapons){
+            if (!first) {
+            cout << ", ";
+            }
+            cout << w->getCrew()->getName();
+            first = false;
+        }
+        cout << "\n";
     }
 };
 
@@ -239,6 +279,26 @@ public:
         shipType = "Corazzata";
         }
 
+    int findTorpedoCount() const {
+        int count = 0;
+        for (Weapon* w : weapons) {
+            if (w->getType() == "Torpedo") {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    int findGunnerCount() const {
+        int count = 0;
+        for (Weapon* w : weapons) {
+            if (w->getType() == "Light Cannon") {
+                count++;
+            }
+        }
+        return count;
+    }
+
     void attack(vector<Ship*>& enemies) override {
         for (Weapon* w : weapons){
             Ship* target = getRandomEnemy(enemies);
@@ -254,6 +314,47 @@ public:
                 cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << endl;
             }
         }
+    }
+
+    void printDetails() override{
+        cout << "[" << id << "] " << "  " << name << "  " << "(" << shipType << ")\n";
+        cout << "   HP: " << hitPoints << "/" << maxHitPoints << "\n";
+        cout << "   Pilots (" << pilot.size() << "/" << maxPilot << "):";
+        bool first = true;
+        for (CrewMember* p : pilot){
+            if (!first) {
+            cout << ", ";
+            }
+            cout << " " << p->getName();
+            first = false;
+        }
+        cout << "\n";
+        cout << "   Gunners (" << findGunnerCount() << "/" << maxCannon << "): ";
+        first = true;
+        for (Weapon* w : weapons){
+            if (w->getType() == "Torpedo"){
+                continue;
+            }
+            if (!first) {
+            cout << ", ";
+            }
+            cout << w->getCrew()->getName();
+            first = false;
+        }
+        cout << "\n";
+        cout << "   Torp Handlers (" << findTorpedoCount() << "/" << maxTorpedo << "): ";
+        first = true;
+        for (Weapon* w : weapons){
+            if (w->getType() == "Light Cannon"){
+                continue;
+            }
+            if (!first) {
+            cout << ", ";
+            }
+            cout << w->getCrew()->getName();
+            first = false;
+        }
+        cout << "\n";
     }
 };
 
@@ -318,6 +419,26 @@ public:
         shipType = "Fregatte";
         }
 
+    int findTorpedoCount() const {
+        int count = 0;
+        for (Weapon* w : weapons) {
+            if (w->getType() == "Torpedo") {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    int findGunnerCount() const {
+        int count = 0;
+        for (Weapon* w : weapons) {
+            if (w->getType() == "Light Cannon") {
+                count++;
+            }
+        }
+        return count;
+    }
+
     void attack(vector<Ship*>& enemies) override {
         for (Weapon* w : weapons){
             Ship* target = getRandomEnemy(enemies);
@@ -334,6 +455,48 @@ public:
             }
         }
     }
+
+    void printDetails() override{
+        cout << "[" << id << "] " << "  " << name << "  " << "(" << shipType << ")\n";
+        cout << "   HP: " << hitPoints << "/" << maxHitPoints << "\n";
+        cout << "   Pilots (" << pilot.size() << "/" << maxPilot << "):";
+        bool first = true;
+        for (CrewMember* p : pilot){
+            if (!first) {
+            cout << ", ";
+            }
+            cout << " " << p->getName();
+            first = false;
+        }
+        cout << "\n";
+        cout << "   Gunners (" << findGunnerCount() << "/" << maxCannon << "): ";
+        first = true;
+        for (Weapon* w : weapons){
+            if (w->getType() == "Torpedo"){
+                continue;
+            }
+            if (!first) {
+            cout << ", ";
+            }
+            cout << w->getCrew()->getName();
+            first = false;
+        }
+        cout << "\n";
+        cout << "   Torp Handlers (" << findTorpedoCount() << "/" << maxTorpedo << "): ";
+        first = true;
+        for (Weapon* w : weapons){
+            if (w->getType() == "Light Cannon"){
+                continue;
+            }
+            if (!first) {
+            cout << ", ";
+            }
+            cout << w->getCrew()->getName();
+            first = false;
+        }
+        cout << "\n";
+    }
+
 };
 
 void removeDestroyedShips(vector<Ship*>& ships); //foward declaration for battle engine
@@ -366,18 +529,16 @@ private:
 
         cout << "Zapezoids:\n";
         for (Ship* s : zShips) {
-            cout << s->getShipType() << " " << s->getName()
-                 << " (HP: " << s->getHP() << ")\n";
+            cout << "   " << "[" << s->getID() << "] " << s->getShipType() << " " << s->getName()
+                 << " (" << s->getHitPoints() << "/" << s->getMaxHitPoints() << ")\n";
         }
 
         cout << "Rogoatuskans:\n";
         for (Ship* s : rShips) {
-            cout << s->getShipType() << " " << s->getName()
-                 << " (HP: " << s->getHP() << ")\n";
+            cout << "   " << "[" << s->getID() << "] " << s->getShipType() << " " << s->getName()
+                 << " (" << s->getHitPoints() << "/" << s->getMaxHitPoints() << ")\n";
         }
 
-        cout << "Zapezoid ships left: " << zShips.size() << endl;
-        cout << "Rogoatuskan ships left: " << rShips.size() << endl;
     }
 
 public:
@@ -435,6 +596,10 @@ vector<Ship*> loadShips(const string& filename, bool isZapezoid) {
         getline(ss, type, ',');
         getline(ss, name, ',');
 
+        trimCR(id);
+        trimCR(type);
+        trimCR(name);
+
         if (isZapezoid) {
             if (type == "Guerriero")
                 ships.push_back(new Guerriero(id, name));
@@ -472,6 +637,10 @@ vector<CrewMember*> loadCrew(const string& filename) {
         getline(ss, idStr, ',');
         getline(ss, name, ',');
         getline(ss, role, ',');
+
+        trimCR(idStr);
+        trimCR(name);
+        trimCR(role);
 
         string id = idStr;
         crew.push_back(new CrewMember(id, name, role));
@@ -649,13 +818,13 @@ void assignWeaponsToShips(vector<Ship*>& ships, queue<CrewMember*>& gunner, int 
             bool foundTorpedo = false;
             int count = gunner.size();
             for (int i = 0; i < count; i++){
-                if(gunner.front()->getRole() == "TorpedoHandler" && iteration < 6){
+                if(gunner.front()->getRole() == "TorpedoHandler" && iteration < 6 && !foundTorpedo){
                     s->addCrew(gunner.front());
                     s->addWeapon(new Weapon("Torpedo", 282, gunner.front()));
                     gunner.pop();
                     foundTorpedo = true;
                 }
-                else if (gunner.front()->getRole() == "Gunner"){
+                else if (gunner.front()->getRole() == "Gunner" && !foundGunner){
                     s->addCrew(gunner.front());
                     s->addWeapon(new Weapon("Light Cannon", 159, gunner.front()));
                     gunner.pop();
@@ -732,26 +901,61 @@ int main(int argc, char* argv[]) {
 
     cout << "Pilots assigned to ships\n";
 
-    if(!zPilot.empty()){
-        cout << "got left over pilot on z\n";
-    }
-
-    if(!rPilot.empty()){
-        cout << "got left over pilot on r\n";
-    }
-
     // Assign weapons 
     assignWeaponsToShips(zShips, zGunner);
     assignWeaponsToShips(rShips, rGunner);
 
-    cout << "Weapons assigned to ships\n";
+    cout << zGunner.size() << " leftover gunner or torpedo handler in Team z\n";
+    cout << rGunner.size() << " leftover gunner or torpedo handler in Team r\n";
 
-    if(!zGunner.empty()){
-        cout << "got left over gunner on z";
+    cout << "Weapons assigned to ships\n\n";
+
+    // Print ship details
+    cout << "========================================\n";
+    cout << "       FLEET CONFIGURATION REPORT       \n";
+    cout << "========================================\n\n";
+
+    cout<< "--- ZAPEZOID FLEET ---\n";
+    for (Ship* s : zShips) {
+        s->printDetails();
+        cout << "--------------------------------------------------\n";
+    }
+    
+    if (!zPilot.empty() || !zGunner.empty()){
+        cout << "Leftover Zapezoid Crew Members:\n";
+        while (!zPilot.empty()){
+            CrewMember* c = zPilot.front();
+            cout << "- " << c->getName() << " (" << c->getRole() << ")\n";
+            zPilot.pop();
+        }
+        while (!zGunner.empty()){
+            CrewMember* c = zGunner.front();
+            cout << "- " << c->getName() << " (" << c->getRole() << ")\n";
+            zGunner.pop();
+        }
+        cout << "\n";
+
     }
 
-    if(!rGunner.empty()){
-        cout << "got left over gunner on r";
+    cout<< "\n--- ROGOATUSKAN FLEET ---\n";
+    for (Ship* s : rShips) {
+        s->printDetails();
+        cout << "--------------------------------------------------\n";
+    }
+
+    if (!rPilot.empty() || !rGunner.empty()){
+        cout << "Leftover Rogoatuskan Crew Members:\n";
+        while (!rPilot.empty()){
+            CrewMember* c = rPilot.front();
+            cout << "- " << c->getName() << " (" << c->getRole() << ")\n";
+            rPilot.pop();
+        }
+        while (!rGunner.empty()){
+            CrewMember* c = rGunner.front();
+            cout << "- " << c->getName() << " (" << c->getRole() << ")\n";
+            rGunner.pop();
+        }
+
     }
 
     // Battle simulation
