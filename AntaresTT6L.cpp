@@ -245,6 +245,35 @@ public:
             cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << " With " << cannon->getType() << endl;
         }
     }
+
+    void setPilotasGunner(){
+        this->addWeapon(new Weapon("Light Cannon", 96, pilot.back()));
+    }
+
+    void printDetails() override{
+        cout << "[" << id << "] " << "  " << name << "  " << "(" << shipType << ")\n";
+        cout << "   HP: " << hitPoints << "/" << maxHitPoints << "\n";
+        cout << "   Pilots (" << pilot.size() << "/" << maxPilot << "): ";
+        bool first = true;
+        for (CrewMember* p : pilot){
+            if (!first) {
+            cout << ", ";
+            }
+            cout << p->getName();
+            first = false;
+        }
+        cout << "\n";
+        cout << "   Gunners (" << weapons.size() << "/" << maxCannon << "): ";
+        first = true;
+        for (Weapon* w : weapons){
+            if (!first) {
+            cout << ", ";
+            }
+            cout << w->getCrew()->getName();
+            first = false;
+        }
+        cout << "\n";
+    }
 };
 
 class Medio : public Ship {
@@ -386,6 +415,10 @@ public:
             cout << shipType << " " << name << " misses " << target->getShipType() << " " << target->getName() << " With " << cannon->getType() << endl;
         }
     }
+
+    void setPilotasGunner(){
+        this->addWeapon(new Weapon("Light Cannon", 96, pilot.back()));
+    }
 };
 
 class Kreuzer : public Ship {
@@ -499,6 +532,7 @@ public:
     }
 
 };
+
 
 void removeDestroyedShips(vector<Ship*>& ships); //foward declaration for battle engine
 
@@ -707,23 +741,7 @@ void assignWeaponsToShips(vector<Ship*>& ships, queue<CrewMember*>& gunner, int 
 
         // Zapezoid ships
         if (dynamic_cast<Guerriero*>(s)) {
-            bool foundGunner = false;
-            int count = gunner.size();
-            for (int i = 0; i < count; i++){
-                if(gunner.front()->getRole() == "TorpedoHandler"){
-                    gunner.push(gunner.front());
-                    gunner.pop();
-                }
-                else{
-                    s->addCrew(gunner.front());
-                    s->addWeapon(new Weapon("Light Cannon", 96, gunner.front()));
-                    gunner.pop();
-                    foundGunner = true;
-                }
-                if (foundGunner){
-                    break;
-                }
-            }
+            dynamic_cast<Guerriero*>(s)->setPilotasGunner();
         }
         else if (dynamic_cast<Medio*>(s)) {
             bool foundGunner = false;
@@ -781,23 +799,7 @@ void assignWeaponsToShips(vector<Ship*>& ships, queue<CrewMember*>& gunner, int 
 
         // Rogoatuskan ships
         else if (dynamic_cast<Jager*>(s)) {
-            bool foundGunner = false;
-            int count = gunner.size();
-            for (int i = 0; i < count; i++){
-                if(gunner.front()->getRole() == "TorpedoHandler"){
-                    gunner.push(gunner.front());
-                    gunner.pop();
-                }
-                else{
-                    s->addCrew(gunner.front());
-                    s->addWeapon(new Weapon("Light Cannon", 101, gunner.front()));
-                    gunner.pop();
-                    foundGunner = true;
-                }
-                if (foundGunner){
-                    break;
-                }
-            }
+            dynamic_cast<Jager*>(s)->setPilotasGunner();
         }
         else if (dynamic_cast<Kreuzer*>(s)) {
             bool foundGunner = false;
